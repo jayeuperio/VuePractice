@@ -1,0 +1,88 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="1.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Files not to show in IDE -->
+    <None Remove="yarn.lock" />
+
+    <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ClientApp\scss\core\core.scss" />
+    <Content Include="ClientApp\scss\core\utilities\_background.scss" />
+    <Content Include="ClientApp\scss\core\utilities\_borders.scss" />
+    <Content Include="ClientApp\scss\core\utilities\_display.scss" />
+    <Content Include="ClientApp\scss\core\_animate.scss" />
+    <Content Include="ClientApp\scss\core\_aside.scss" />
+    <Content Include="ClientApp\scss\core\_avatars.scss" />
+    <Content Include="ClientApp\scss\core\_badge.scss" />
+    <Content Include="ClientApp\scss\core\_breadcrumb-menu.scss" />
+    <Content Include="ClientApp\scss\core\_breadcrumb.scss" />
+    <Content Include="ClientApp\scss\core\_buttons.scss" />
+    <Content Include="ClientApp\scss\core\_callout.scss" />
+    <Content Include="ClientApp\scss\core\_card.scss" />
+    <Content Include="ClientApp\scss\core\_charts.scss" />
+    <Content Include="ClientApp\scss\core\_dropdown-menu-right.scss" />
+    <Content Include="ClientApp\scss\core\_dropdown.scss" />
+    <Content Include="ClientApp\scss\core\_footer.scss" />
+    <Content Include="ClientApp\scss\core\_grid.scss" />
+    <Content Include="ClientApp\scss\core\_input-group.scss" />
+    <Content Include="ClientApp\scss\core\_layout.scss" />
+    <Content Include="ClientApp\scss\core\_loading.scss" />
+    <Content Include="ClientApp\scss\core\_mixins.scss" />
+    <Content Include="ClientApp\scss\core\_mobile.scss" />
+    <Content Include="ClientApp\scss\core\_modal.scss" />
+    <Content Include="ClientApp\scss\core\_nav.scss" />
+    <Content Include="ClientApp\scss\core\_navbar.scss" />
+    <Content Include="ClientApp\scss\core\_others.scss" />
+    <Content Include="ClientApp\scss\core\_progress.scss" />
+    <Content Include="ClientApp\scss\core\_rtl.scss" />
+    <Content Include="ClientApp\scss\core\_sidebar.scss" />
+    <Content Include="ClientApp\scss\core\_switches.scss" />
+    <Content Include="ClientApp\scss\core\_tables.scss" />
+    <Content Include="ClientApp\scss\core\_temp.scss" />
+    <Content Include="ClientApp\scss\core\_typography.scss" />
+    <Content Include="ClientApp\scss\core\_utilities.scss" />
+    <Content Include="ClientApp\scss\core\_variables.scss" />
+    <Content Include="ClientApp\scss\core\_widgets.scss" />
+    <Content Include="ClientApp\scss\style.scss" />
+    <Content Include="ClientApp\scss\vendors\chart.js\chart.scss" />
+    <Content Include="ClientApp\scss\vendors\_variables.scss" />
+    <Content Include="ClientApp\scss\_bootstrap-variables.scss" />
+    <Content Include="ClientApp\scss\_core-variables.scss" />
+    <Content Include="ClientApp\scss\_custom.scss" />
+    <Content Include="img\avatars\1.jpg" />
+    <Content Include="img\avatars\2.jpg" />
+    <Content Include="img\avatars\3.jpg" />
+    <Content Include="img\avatars\4.jpg" />
+    <Content Include="img\avatars\5.jpg" />
+    <Content Include="img\avatars\6.jpg" />
+    <Content Include="img\avatars\7.jpg" />
+    <Content Include="img\avatars\8.jpg" />
+    <Content Include="img\favicon.png" />
+    <Content Include="img\logo-symbol.png" />
+    <Content Include="img\logo.png" />
+  </ItemGroup>
+  <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec Command="npm install" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --env.prod" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="wwwroot\dist\**; ClientApp\dist\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+</Project>
