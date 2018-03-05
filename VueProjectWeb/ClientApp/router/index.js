@@ -54,6 +54,13 @@ import Register from '@/views/pages/Register'
 
 Vue.use(Router)
 
+function requireAuth(to, from, next) {
+    next({
+        path: '/pages/login',
+        query: { redirect: to.path }
+    })
+}
+
 export default new Router({
   mode: 'hash', // Demo is living in GitHub.io, so required!
   linkActiveClass: 'open active',
@@ -64,6 +71,7 @@ export default new Router({
       redirect: '/dashboard',
       name: 'Home',
       component: Full,
+      beforeEnter: requireAuth,
       children: [
         {
           path: 'dashboard',
