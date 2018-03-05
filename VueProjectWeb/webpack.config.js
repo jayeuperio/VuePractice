@@ -2,6 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const bundleOutputDir = './wwwroot/dist';
+const bundleMainDir = './wwwroot/static';
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
@@ -70,7 +72,13 @@ module.exports = (env) => {
             new webpack.DllReferencePlugin({
                 context: __dirname,
                 manifest: require('./wwwroot/dist/vendor-manifest.json')
-            })
+            }),
+            new CopyWebpackPlugin([
+                {
+                    from: path.resolve(__dirname, './ClientApp/static'),
+                    to: path.join(__dirname, bundleMainDir)
+                }
+            ])
         ].concat(isDevBuild ? [
             // Plugins that apply in development builds only
             new webpack.SourceMapDevToolPlugin({

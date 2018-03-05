@@ -55,14 +55,11 @@ import Register from '@/views/pages/Register'
 Vue.use(Router)
 
 function requireAuth(to, from, next) {
-    next({
-        path: '/pages/login',
-        query: { redirect: to.path }
-    })
+    next();
 }
 
 export default new Router({
-  mode: 'hash', // Demo is living in GitHub.io, so required!
+  mode: 'history', // Demo is living in GitHub.io, so required!
   linkActiveClass: 'open active',
   scrollBehavior: () => ({ y: 0 }),
   routes: [
